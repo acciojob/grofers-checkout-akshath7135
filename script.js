@@ -3,37 +3,36 @@ getSumBtn.append("Get Total Price");
 document.body.appendChild(getSumBtn);
 
 const getSum = () => {
-    // Select all price elements
-    const prices = document.querySelectorAll('.price');
+    // Select all elements with class "price"
+    const prices = document.querySelectorAll(".price");
+    
+    // Calculate total sum
     let total = 0;
-
-    // Loop through the prices and sum them
     prices.forEach(price => {
-        total += parseFloat(price.textContent); // Convert text to float and add to total
+        total += parseFloat(price.textContent);
     });
 
-    // Check if a total row already exists and remove it
-    const existingTotalRow = document.querySelector('.total-row');
-    if (existingTotalRow) {
-        existingTotalRow.remove();
+    // Check if the total row already exists, remove if it does
+    const existingRow = document.getElementById("totalRow");
+    if (existingRow) {
+        existingRow.remove();
     }
 
-    // Create a new row for the total
-    const totalRow = document.createElement('tr');
-    totalRow.classList.add('total-row'); // Add a class for easy identification
-    const totalCell = document.createElement('td');
-    totalCell.colSpan = 1; // Span across one column for the item cell
-    totalCell.textContent = "Total Price"; // Label for the total
-    const totalPriceCell = document.createElement('td');
-    totalPriceCell.textContent = total; // Display the total price
+    // Create new row for total price
+    const table = document.querySelector("table");
+    const newRow = document.createElement("tr");
+    newRow.id = "totalRow";
 
-    // Append cells to the total row
-    totalRow.appendChild(totalCell);
-    totalRow.appendChild(totalPriceCell);
+    // Create cell that spans across both columns
+    const totalCell = document.createElement("td");
+    totalCell.setAttribute("colspan", "2");  // Make it span across both columns
+    totalCell.style.textAlign = "center"; 
+    totalCell.style.fontWeight = "bold";
+    totalCell.textContent = `Total Price: Rs ${total}`;
 
-    // Append the total row to the table
-    document.querySelector('table').appendChild(totalRow);
+    newRow.appendChild(totalCell);
+    table.appendChild(newRow);
 };
 
-// Add event listener to the button
+// Attach event listener to button
 getSumBtn.addEventListener("click", getSum);
