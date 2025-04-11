@@ -1,38 +1,38 @@
+// Create the button to get the total price
 const getSumBtn = document.createElement("button");
-getSumBtn.append("Get Total Price");
+getSumBtn.textContent = "Get Total Price";
 document.body.appendChild(getSumBtn);
 
+// Create a div to display the total price (matching Cypress test)
+const totalDiv = document.createElement("div");
+totalDiv.id = "ans";
+totalDiv.style.fontWeight = "bold";
+totalDiv.style.textAlign = "center";
+totalDiv.style.marginTop = "10px";
+document.body.appendChild(totalDiv);
+
+// Make prices editable
+document.querySelectorAll(".price").forEach((price) => {
+    price.setAttribute("contenteditable", "true");
+    price.style.border = "1px solid gray"; // Visual indication that it's editable
+    price.style.padding = "5px";
+});
+
+// Function to calculate and display the total price
 const getSum = () => {
-    // Select all elements with class "price"
     const prices = document.querySelectorAll(".price");
-    
-    // Calculate total sum
+
     let total = 0;
     prices.forEach(price => {
-        total += parseFloat(price.textContent);
+        let value = parseFloat(price.textContent.trim());
+        if (!isNaN(value)) {
+            total += value;
+        }
     });
 
-    // Check if the total row already exists, remove if it does
-    const existingRow = document.getElementById("totalRow");
-    if (existingRow) {
-        existingRow.remove();
-    }
-
-    // Create new row for total price
-    const table = document.querySelector("table");
-    const newRow = document.createElement("tr");
-    newRow.id = "totalRow";
-
-    // Create cell that spans across both columns
-    const totalCell = document.createElement("td");
-    totalCell.setAttribute("colspan", "2");  // Make it span across both columns
-    totalCell.style.textAlign = "center"; 
-    totalCell.style.fontWeight = "bold";
-    totalCell.textContent = `Total Price: Rs ${total}`;
-
-    newRow.appendChild(totalCell);
-    table.appendChild(newRow);
+    // Display the total inside #ans div
+    totalDiv.textContent = `Total Price: Rs ${total}`;
 };
 
-// Attach event listener to button
+// Attach event listener to the button
 getSumBtn.addEventListener("click", getSum);
